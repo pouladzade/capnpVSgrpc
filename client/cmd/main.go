@@ -5,7 +5,6 @@ import (
 	cc "github.com/capnpVSgrpc/client/capnp"
 	gc "github.com/capnpVSgrpc/client/grpc"
 	"log"
-	"time"
 )
 
 func main() {
@@ -26,33 +25,18 @@ func main() {
 
 }
 
-func runGrpc(round int) {
+func runGrpc(rnd int) {
 	// GRPC Benchmark
-	var nano int64
-	gclnt := gc.GrpcClient{}
-	for i := 0; i < round; i++ {
-		t1 := time.Now()
-		gclnt.Run()
-		t2 := time.Now()
-		nano += t2.UnixNano() - t1.UnixNano()
-	}
-
-	log.Printf("\nGRPC done in %d Round in Average Time  : %d Nano Second", round, nano/int64(round))
-
+	clnt := gc.GrpcClient{}
+	nano := clnt.Run(rnd)
+	log.Printf("\nGRPC done in %d Round in Average Time  : %d Nano Second", rnd, nano/int64(rnd))
 }
 
-func runCapnp(round int) {
+func runCapnp(rnd int) {
 
 	// CAPNP Benchmark
-	var nano int64
-	cclnt := cc.CapnpClient{}
-	for i := 0; i < round; i++ {
-		t1 := time.Now()
-		cclnt.Run()
-		t2 := time.Now()
-		nano += t2.UnixNano() - t1.UnixNano()
-	}
-
-	log.Printf("\nCAPNP done in %d Round in Average Time : %d Nano Second", round, nano/int64(round))
+	clnt := cc.CapnpClient{}
+	nano := clnt.Run(rnd)
+	log.Printf("\nCAPNP done in %d Round in Average Time : %d Nano Second", rnd, nano/int64(rnd))
 
 }

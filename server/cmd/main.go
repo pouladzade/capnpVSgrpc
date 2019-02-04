@@ -1,16 +1,27 @@
 package main
 
 import (
+	"flag"
 	"github.com/capnpVSgrpc/server/capnp"
 	"github.com/capnpVSgrpc/server/grpc"
+	"log"
 )
 
 func main() {
 
-	gs := grpc.GrpcServer{}
-	go gs.Start()
+	cmd := flag.String("cmd", "grpc", "Protocol name grpc or capnp")
 
-	cs := capnp.CapnpServer{}
+	flag.Parse()
 
-	cs.Start()
+	switch *cmd {
+	case "grpc":
+		gs := grpc.GrpcServer{}
+		gs.Start()
+	case "capnp":
+		cs := capnp.CapnpServer{}
+		cs.Start()
+	default:
+		log.Println("Error : Please insert the inputs!")
+	}
+
 }

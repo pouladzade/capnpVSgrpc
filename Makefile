@@ -18,7 +18,8 @@ all: tools fmt deps gen build
 ########################################
 ### Tools & dependencies
 tools:
-	#@capnp --version || (echo "Install Capn'p first; https://capnproto.org/install.html"; false)
+	@capnp --version || (echo "Install Capn'p first; https://capnproto.org/install.html"; false)
+	@protoc --version || (echo "Install Protoc first; https://github.com/protocolbuffers/protobuf"; false)
 	@echo "Installing tools"
 	go get $(GOTOOLS)
 	@gometalinter.v2 --install
@@ -38,7 +39,7 @@ build:
 ########################################
 ### Testing
 test:
-	$go test $(PACKAGES)
+	go test $(PACKAGES)
 
 ########################################
 ### Generating capnp go files
