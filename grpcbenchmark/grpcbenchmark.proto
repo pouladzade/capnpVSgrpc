@@ -1,0 +1,32 @@
+syntax = 'proto3';
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option go_package = "./grpcbenchmark";
+
+package grpcbenchmark;
+
+service  CoreBanking{
+
+    rpc createAccount (Account) returns (Result);
+    rpc getAccountInfo (AccountId) returns (Response);
+}
+
+message AccountId{
+    bytes accountId=1;
+}
+message Account {
+
+    AccountId accountId=1;
+    string name=2;
+    uint64 balance=3;
+
+}
+
+message Result {
+    int32 code=1;
+    string message=2;
+}
+message Response{
+    Result result = 1;
+    Account account = 2;
+}
