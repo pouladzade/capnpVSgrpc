@@ -3,7 +3,7 @@ package grpc
 import (
 	"context"
 	"github.com/capnpVSgrpc/config"
-	gb "github.com/capnpVSgrpc/grpcbenchmark"
+	gb "github.com/capnpVSgrpc/protobuff"
 	"google.golang.org/grpc"
 	"log"
 	"net"

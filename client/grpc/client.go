@@ -7,7 +7,7 @@ import (
 	"log"
 	"time"
 
-	pb "github.com/capnpVSgrpc/grpcbenchmark"
+	pb "github.com/capnpVSgrpc/protobuff"
 	"google.golang.org/grpc"
 )
 

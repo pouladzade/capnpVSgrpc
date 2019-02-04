@@ -2,7 +2,7 @@ package config
 
 const (
 	Code         = 123456
-	Message      = "It's just a benchmark between gocapnp proto and gogrpc"
+	Message      = "It's just a benchmark between gocapnp protobuff and gogrpc"
 	GrpcAddress  = "localhost:5055"
 	CapnpAddress = "localhost:5056"
 	AccountName  = "Ahmad"

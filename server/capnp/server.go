@@ -2,7 +2,7 @@ package capnp
 
 import (
 	"fmt"
-	crb "github.com/capnpVSgrpc/capnpbenchmark"
+	crb "github.com/capnpVSgrpc/capnpproto"
 	"github.com/capnpVSgrpc/config"
 	"log"
 	"net"

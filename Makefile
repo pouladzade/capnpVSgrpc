@@ -12,8 +12,8 @@ SERVER=-tags 'server'
 CLIENT=-tags 'client'
 LDFLAGS= -ldflags
 CAPNPPROTO=$(GOPATH)/src/zombiezen.com/go/capnproto2/std
-INCLUDE = -I=. -I=${GOPATH}/src -I=${GOPATH}/src/github.com/capnpVSgrpc/grpcbenchmark
-all: tools fmt deps capnp build
+INCLUDE = -I=. -I=${GOPATH}/src -I=${GOPATH}/src/github.com/capnpVSgrpc/protobuff
+all: tools fmt deps gen build
 
 ########################################
 ### Tools & dependencies
@@ -42,14 +42,9 @@ test:
 
 ########################################
 ### Generating capnp go files
-capnp:
-	capnp compile -I $(CAPNPPROTO) -ogo ./capnpbenchmark/capnpbenchmark.capnp
-	--protoc $(INCLUDE) --gogo_out=plugins=grpc:. ./grpcbenchmark/grpcbenchmark.proto
-
-########################################
-### Generating protobuff go files
-proto:
-    --protoc $(INCLUDE) --gogo_out=plugins=grpc:. ./grpcbenchmark/grpcbenchmark.proto
+gen:
+	capnp compile -I $(CAPNPPROTO) -ogo ./capnpproto/capnpbenchmark.capnp
+	--protoc $(INCLUDE) --gogo_out=plugins=grpc:. ./protobuff/grpcbenchmark.proto
 
 ########################################
 ### Formatting, linting, and vetting
@@ -88,10 +83,9 @@ metalinter:
 
 
 .PHONY: tools fmt deps capnp build test
-.PHONY: capnp
+.PHONY: gen
 .PHONY: build
 .PHONY: tools deps
 .PHONY: fmt metalinter
 .PHONY: all
-.PHONY: proto
 

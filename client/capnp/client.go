@@ -9,7 +9,7 @@ import (
 	"net"
 	"zombiezen.com/go/capnproto2/rpc"
 
-	pb "github.com/capnpVSgrpc/capnpbenchmark"
+	pb "github.com/capnpVSgrpc/capnpproto"
 )
 
 type CapnpClient struct {
