@@ -1,7 +1,7 @@
 using Go = import "/go.capnp";
 @0xaaa3acc39d94e0f8;
-$Go.package("capnpbenchmark");
-$Go.import("capnpbenchmark");
+$Go.package("capnpproto");
+$Go.import("capnpproto");
 
 
 struct Account{
