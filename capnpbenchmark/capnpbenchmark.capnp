@@ -10,17 +10,7 @@ struct Account{
     balance   @2 :UInt64;
 }
 
-struct Result {
-    code    @0 : Int32;
-    message @1 : Text;
-}
-struct Response{
-    result  @0 : Result;
-    account @1 : Account;
-}
-
 interface CoreBanking {
-  createAccount  @0 (acc :Account) -> (res:Result);
-  getAccountInfo @1 (accountId :Data) -> (res :Response);
+  echoAccount    @0 (acc1 :Account) -> (acc2 :Account);
 }
 

@@ -7,8 +7,7 @@ package grpcbenchmark;
 
 service  CoreBanking{
 
-    rpc createAccount (Account) returns (Result);
-    rpc getAccountInfo (AccountId) returns (Response);
+    rpc EchoAccount (Account) returns (Account);
 }
 
 message AccountId{
@@ -20,13 +19,4 @@ message Account {
     string name=2;
     uint64 balance=3;
 
-}
-
-message Result {
-    int32 code=1;
-    string message=2;
-}
-message Response{
-    Result result = 1;
-    Account account = 2;
 }

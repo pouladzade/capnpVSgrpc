@@ -102,201 +102,14 @@ func (p Account_Promise) Struct() (Account, error) {
 	return Account{s}, err
 }
 
-type Result struct{ capnp.Struct }
-
-// Result_TypeID is the unique identifier for the type Result.
-const Result_TypeID = 0xd2f43a943218a9fb
-
-func NewResult(s *capnp.Segment) (Result, error) {
-	st, err := capnp.NewStruct(s, capnp.ObjectSize{DataSize: 8, PointerCount: 1})
-	return Result{st}, err
-}
-
-func NewRootResult(s *capnp.Segment) (Result, error) {
-	st, err := capnp.NewRootStruct(s, capnp.ObjectSize{DataSize: 8, PointerCount: 1})
-	return Result{st}, err
-}
-
-func ReadRootResult(msg *capnp.Message) (Result, error) {
-	root, err := msg.RootPtr()
-	return Result{root.Struct()}, err
-}
-
-func (s Result) String() string {
-	str, _ := text.Marshal(0xd2f43a943218a9fb, s.Struct)
-	return str
-}
-
-func (s Result) Code() int32 {
-	return int32(s.Struct.Uint32(0))
-}
-
-func (s Result) SetCode(v int32) {
-	s.Struct.SetUint32(0, uint32(v))
-}
-
-func (s Result) Message() (string, error) {
-	p, err := s.Struct.Ptr(0)
-	return p.Text(), err
-}
-
-func (s Result) HasMessage() bool {
-	p, err := s.Struct.Ptr(0)
-	return p.IsValid() || err != nil
-}
-
-func (s Result) MessageBytes() ([]byte, error) {
-	p, err := s.Struct.Ptr(0)
-	return p.TextBytes(), err
-}
-
-func (s Result) SetMessage(v string) error {
-	return s.Struct.SetText(0, v)
-}
-
-// Result_List is a list of Result.
-type Result_List struct{ capnp.List }
-
-// NewResult creates a new list of Result.
-func NewResult_List(s *capnp.Segment, sz int32) (Result_List, error) {
-	l, err := capnp.NewCompositeList(s, capnp.ObjectSize{DataSize: 8, PointerCount: 1}, sz)
-	return Result_List{l}, err
-}
-
-func (s Result_List) At(i int) Result { return Result{s.List.Struct(i)} }
-
-func (s Result_List) Set(i int, v Result) error { return s.List.SetStruct(i, v.Struct) }
-
-func (s Result_List) String() string {
-	str, _ := text.MarshalList(0xd2f43a943218a9fb, s.List)
-	return str
-}
-
-// Result_Promise is a wrapper for a Result promised by a client call.
-type Result_Promise struct{ *capnp.Pipeline }
-
-func (p Result_Promise) Struct() (Result, error) {
-	s, err := p.Pipeline.Struct()
-	return Result{s}, err
-}
-
-type Response struct{ capnp.Struct }
-
-// Response_TypeID is the unique identifier for the type Response.
-const Response_TypeID = 0xe16a5fbf7cc9b4b2
-
-func NewResponse(s *capnp.Segment) (Response, error) {
-	st, err := capnp.NewStruct(s, capnp.ObjectSize{DataSize: 0, PointerCount: 2})
-	return Response{st}, err
-}
-
-func NewRootResponse(s *capnp.Segment) (Response, error) {
-	st, err := capnp.NewRootStruct(s, capnp.ObjectSize{DataSize: 0, PointerCount: 2})
-	return Response{st}, err
-}
-
-func ReadRootResponse(msg *capnp.Message) (Response, error) {
-	root, err := msg.RootPtr()
-	return Response{root.Struct()}, err
-}
-
-func (s Response) String() string {
-	str, _ := text.Marshal(0xe16a5fbf7cc9b4b2, s.Struct)
-	return str
-}
-
-func (s Response) Result() (Result, error) {
-	p, err := s.Struct.Ptr(0)
-	return Result{Struct: p.Struct()}, err
-}
-
-func (s Response) HasResult() bool {
-	p, err := s.Struct.Ptr(0)
-	return p.IsValid() || err != nil
-}
-
-func (s Response) SetResult(v Result) error {
-	return s.Struct.SetPtr(0, v.Struct.ToPtr())
-}
-
-// NewResult sets the result field to a newly
-// allocated Result struct, preferring placement in s's segment.
-func (s Response) NewResult() (Result, error) {
-	ss, err := NewResult(s.Struct.Segment())
-	if err != nil {
-		return Result{}, err
-	}
-	err = s.Struct.SetPtr(0, ss.Struct.ToPtr())
-	return ss, err
-}
-
-func (s Response) Account() (Account, error) {
-	p, err := s.Struct.Ptr(1)
-	return Account{Struct: p.Struct()}, err
-}
-
-func (s Response) HasAccount() bool {
-	p, err := s.Struct.Ptr(1)
-	return p.IsValid() || err != nil
-}
-
-func (s Response) SetAccount(v Account) error {
-	return s.Struct.SetPtr(1, v.Struct.ToPtr())
-}
-
-// NewAccount sets the account field to a newly
-// allocated Account struct, preferring placement in s's segment.
-func (s Response) NewAccount() (Account, error) {
-	ss, err := NewAccount(s.Struct.Segment())
-	if err != nil {
-		return Account{}, err
-	}
-	err = s.Struct.SetPtr(1, ss.Struct.ToPtr())
-	return ss, err
-}
-
-// Response_List is a list of Response.
-type Response_List struct{ capnp.List }
-
-// NewResponse creates a new list of Response.
-func NewResponse_List(s *capnp.Segment, sz int32) (Response_List, error) {
-	l, err := capnp.NewCompositeList(s, capnp.ObjectSize{DataSize: 0, PointerCount: 2}, sz)
-	return Response_List{l}, err
-}
-
-func (s Response_List) At(i int) Response { return Response{s.List.Struct(i)} }
-
-func (s Response_List) Set(i int, v Response) error { return s.List.SetStruct(i, v.Struct) }
-
-func (s Response_List) String() string {
-	str, _ := text.MarshalList(0xe16a5fbf7cc9b4b2, s.List)
-	return str
-}
-
-// Response_Promise is a wrapper for a Response promised by a client call.
-type Response_Promise struct{ *capnp.Pipeline }
-
-func (p Response_Promise) Struct() (Response, error) {
-	s, err := p.Pipeline.Struct()
-	return Response{s}, err
-}
-
-func (p Response_Promise) Result() Result_Promise {
-	return Result_Promise{Pipeline: p.Pipeline.GetPipeline(0)}
-}
-
-func (p Response_Promise) Account() Account_Promise {
-	return Account_Promise{Pipeline: p.Pipeline.GetPipeline(1)}
-}
-
 type CoreBanking struct{ Client capnp.Client }
 
 // CoreBanking_TypeID is the unique identifier for the type CoreBanking.
 const CoreBanking_TypeID = 0xa98297869266ae45
 
-func (c CoreBanking) CreateAccount(ctx context.Context, params func(CoreBanking_createAccount_Params) error, opts ...capnp.CallOption) CoreBanking_createAccount_Results_Promise {
+func (c CoreBanking) EchoAccount(ctx context.Context, params func(CoreBanking_echoAccount_Params) error, opts ...capnp.CallOption) CoreBanking_echoAccount_Results_Promise {
 	if c.Client == nil {
-		return CoreBanking_createAccount_Results_Promise{Pipeline: capnp.NewPipeline(capnp.ErrorAnswer(capnp.ErrNullClient))}
+		return CoreBanking_echoAccount_Results_Promise{Pipeline: capnp.NewPipeline(capnp.ErrorAnswer(capnp.ErrNullClient))}
 	}
 	call := &capnp.Call{
 		Ctx: ctx,
@@ -304,41 +117,19 @@ func (c CoreBanking) CreateAccount(ctx context.Context, params func(CoreBanking_
 			InterfaceID:   0xa98297869266ae45,
 			MethodID:      0,
 			InterfaceName: "capnpbenchmark/capnpbenchmark.capnp:CoreBanking",
-			MethodName:    "createAccount",
+			MethodName:    "echoAccount",
 		},
 		Options: capnp.NewCallOptions(opts),
 	}
 	if params != nil {
 		call.ParamsSize = capnp.ObjectSize{DataSize: 0, PointerCount: 1}
-		call.ParamsFunc = func(s capnp.Struct) error { return params(CoreBanking_createAccount_Params{Struct: s}) }
+		call.ParamsFunc = func(s capnp.Struct) error { return params(CoreBanking_echoAccount_Params{Struct: s}) }
 	}
-	return CoreBanking_createAccount_Results_Promise{Pipeline: capnp.NewPipeline(c.Client.Call(call))}
-}
-func (c CoreBanking) GetAccountInfo(ctx context.Context, params func(CoreBanking_getAccountInfo_Params) error, opts ...capnp.CallOption) CoreBanking_getAccountInfo_Results_Promise {
-	if c.Client == nil {
-		return CoreBanking_getAccountInfo_Results_Promise{Pipeline: capnp.NewPipeline(capnp.ErrorAnswer(capnp.ErrNullClient))}
-	}
-	call := &capnp.Call{
-		Ctx: ctx,
-		Method: capnp.Method{
-			InterfaceID:   0xa98297869266ae45,
-			MethodID:      1,
-			InterfaceName: "capnpbenchmark/capnpbenchmark.capnp:CoreBanking",
-			MethodName:    "getAccountInfo",
-		},
-		Options: capnp.NewCallOptions(opts),
-	}
-	if params != nil {
-		call.ParamsSize = capnp.ObjectSize{DataSize: 0, PointerCount: 1}
-		call.ParamsFunc = func(s capnp.Struct) error { return params(CoreBanking_getAccountInfo_Params{Struct: s}) }
-	}
-	return CoreBanking_getAccountInfo_Results_Promise{Pipeline: capnp.NewPipeline(c.Client.Call(call))}
+	return CoreBanking_echoAccount_Results_Promise{Pipeline: capnp.NewPipeline(c.Client.Call(call))}
 }
 
 type CoreBanking_Server interface {
-	CreateAccount(CoreBanking_createAccount) error
-
-	GetAccountInfo(CoreBanking_getAccountInfo) error
+	EchoAccount(CoreBanking_echoAccount) error
 }
 
 func CoreBanking_ServerToClient(s CoreBanking_Server) CoreBanking {
@@ -348,7 +139,7 @@ func CoreBanking_ServerToClient(s CoreBanking_Server) CoreBanking {
 
 func CoreBanking_Methods(methods []server.Method, s CoreBanking_Server) []server.Method {
 	if cap(methods) == 0 {
-		methods = make([]server.Method, 0, 2)
+		methods = make([]server.Method, 0, 1)
 	}
 
 	methods = append(methods, server.Method{
@@ -356,25 +147,11 @@ func CoreBanking_Methods(methods []server.Method, s CoreBanking_Server) []server
 			InterfaceID:   0xa98297869266ae45,
 			MethodID:      0,
 			InterfaceName: "capnpbenchmark/capnpbenchmark.capnp:CoreBanking",
-			MethodName:    "createAccount",
+			MethodName:    "echoAccount",
 		},
 		Impl: func(c context.Context, opts capnp.CallOptions, p, r capnp.Struct) error {
-			call := CoreBanking_createAccount{c, opts, CoreBanking_createAccount_Params{Struct: p}, CoreBanking_createAccount_Results{Struct: r}}
-			return s.CreateAccount(call)
-		},
-		ResultsSize: capnp.ObjectSize{DataSize: 0, PointerCount: 1},
-	})
-
-	methods = append(methods, server.Method{
-		Method: capnp.Method{
-			InterfaceID:   0xa98297869266ae45,
-			MethodID:      1,
-			InterfaceName: "capnpbenchmark/capnpbenchmark.capnp:CoreBanking",
-			MethodName:    "getAccountInfo",
-		},
-		Impl: func(c context.Context, opts capnp.CallOptions, p, r capnp.Struct) error {
-			call := CoreBanking_getAccountInfo{c, opts, CoreBanking_getAccountInfo_Params{Struct: p}, CoreBanking_getAccountInfo_Results{Struct: r}}
-			return s.GetAccountInfo(call)
+			call := CoreBanking_echoAccount{c, opts, CoreBanking_echoAccount_Params{Struct: p}, CoreBanking_echoAccount_Results{Struct: r}}
+			return s.EchoAccount(call)
 		},
 		ResultsSize: capnp.ObjectSize{DataSize: 0, PointerCount: 1},
 	})
@@ -382,64 +159,56 @@ func CoreBanking_Methods(methods []server.Method, s CoreBanking_Server) []server
 	return methods
 }
 
-// CoreBanking_createAccount holds the arguments for a server call to CoreBanking.createAccount.
-type CoreBanking_createAccount struct {
+// CoreBanking_echoAccount holds the arguments for a server call to CoreBanking.echoAccount.
+type CoreBanking_echoAccount struct {
 	Ctx     context.Context
 	Options capnp.CallOptions
-	Params  CoreBanking_createAccount_Params
-	Results CoreBanking_createAccount_Results
+	Params  CoreBanking_echoAccount_Params
+	Results CoreBanking_echoAccount_Results
 }
 
-// CoreBanking_getAccountInfo holds the arguments for a server call to CoreBanking.getAccountInfo.
-type CoreBanking_getAccountInfo struct {
-	Ctx     context.Context
-	Options capnp.CallOptions
-	Params  CoreBanking_getAccountInfo_Params
-	Results CoreBanking_getAccountInfo_Results
-}
+type CoreBanking_echoAccount_Params struct{ capnp.Struct }
 
-type CoreBanking_createAccount_Params struct{ capnp.Struct }
+// CoreBanking_echoAccount_Params_TypeID is the unique identifier for the type CoreBanking_echoAccount_Params.
+const CoreBanking_echoAccount_Params_TypeID = 0xf679d46bf8232843
 
-// CoreBanking_createAccount_Params_TypeID is the unique identifier for the type CoreBanking_createAccount_Params.
-const CoreBanking_createAccount_Params_TypeID = 0xf679d46bf8232843
-
-func NewCoreBanking_createAccount_Params(s *capnp.Segment) (CoreBanking_createAccount_Params, error) {
+func NewCoreBanking_echoAccount_Params(s *capnp.Segment) (CoreBanking_echoAccount_Params, error) {
 	st, err := capnp.NewStruct(s, capnp.ObjectSize{DataSize: 0, PointerCount: 1})
-	return CoreBanking_createAccount_Params{st}, err
+	return CoreBanking_echoAccount_Params{st}, err
 }
 
-func NewRootCoreBanking_createAccount_Params(s *capnp.Segment) (CoreBanking_createAccount_Params, error) {
+func NewRootCoreBanking_echoAccount_Params(s *capnp.Segment) (CoreBanking_echoAccount_Params, error) {
 	st, err := capnp.NewRootStruct(s, capnp.ObjectSize{DataSize: 0, PointerCount: 1})
-	return CoreBanking_createAccount_Params{st}, err
+	return CoreBanking_echoAccount_Params{st}, err
 }
 
-func ReadRootCoreBanking_createAccount_Params(msg *capnp.Message) (CoreBanking_createAccount_Params, error) {
+func ReadRootCoreBanking_echoAccount_Params(msg *capnp.Message) (CoreBanking_echoAccount_Params, error) {
 	root, err := msg.RootPtr()
-	return CoreBanking_createAccount_Params{root.Struct()}, err
+	return CoreBanking_echoAccount_Params{root.Struct()}, err
 }
 
-func (s CoreBanking_createAccount_Params) String() string {
+func (s CoreBanking_echoAccount_Params) String() string {
 	str, _ := text.Marshal(0xf679d46bf8232843, s.Struct)
 	return str
 }
 
-func (s CoreBanking_createAccount_Params) Acc() (Account, error) {
+func (s CoreBanking_echoAccount_Params) Acc1() (Account, error) {
 	p, err := s.Struct.Ptr(0)
 	return Account{Struct: p.Struct()}, err
 }
 
-func (s CoreBanking_createAccount_Params) HasAcc() bool {
+func (s CoreBanking_echoAccount_Params) HasAcc1() bool {
 	p, err := s.Struct.Ptr(0)
 	return p.IsValid() || err != nil
 }
 
-func (s CoreBanking_createAccount_Params) SetAcc(v Account) error {
+func (s CoreBanking_echoAccount_Params) SetAcc1(v Account) error {
 	return s.Struct.SetPtr(0, v.Struct.ToPtr())
 }
 
-// NewAcc sets the acc field to a newly
+// NewAcc1 sets the acc1 field to a newly
 // allocated Account struct, preferring placement in s's segment.
-func (s CoreBanking_createAccount_Params) NewAcc() (Account, error) {
+func (s CoreBanking_echoAccount_Params) NewAcc1() (Account, error) {
 	ss, err := NewAccount(s.Struct.Segment())
 	if err != nil {
 		return Account{}, err
@@ -448,327 +217,154 @@ func (s CoreBanking_createAccount_Params) NewAcc() (Account, error) {
 	return ss, err
 }
 
-// CoreBanking_createAccount_Params_List is a list of CoreBanking_createAccount_Params.
-type CoreBanking_createAccount_Params_List struct{ capnp.List }
+// CoreBanking_echoAccount_Params_List is a list of CoreBanking_echoAccount_Params.
+type CoreBanking_echoAccount_Params_List struct{ capnp.List }
 
-// NewCoreBanking_createAccount_Params creates a new list of CoreBanking_createAccount_Params.
-func NewCoreBanking_createAccount_Params_List(s *capnp.Segment, sz int32) (CoreBanking_createAccount_Params_List, error) {
+// NewCoreBanking_echoAccount_Params creates a new list of CoreBanking_echoAccount_Params.
+func NewCoreBanking_echoAccount_Params_List(s *capnp.Segment, sz int32) (CoreBanking_echoAccount_Params_List, error) {
 	l, err := capnp.NewCompositeList(s, capnp.ObjectSize{DataSize: 0, PointerCount: 1}, sz)
-	return CoreBanking_createAccount_Params_List{l}, err
+	return CoreBanking_echoAccount_Params_List{l}, err
 }
 
-func (s CoreBanking_createAccount_Params_List) At(i int) CoreBanking_createAccount_Params {
-	return CoreBanking_createAccount_Params{s.List.Struct(i)}
+func (s CoreBanking_echoAccount_Params_List) At(i int) CoreBanking_echoAccount_Params {
+	return CoreBanking_echoAccount_Params{s.List.Struct(i)}
 }
 
-func (s CoreBanking_createAccount_Params_List) Set(i int, v CoreBanking_createAccount_Params) error {
+func (s CoreBanking_echoAccount_Params_List) Set(i int, v CoreBanking_echoAccount_Params) error {
 	return s.List.SetStruct(i, v.Struct)
 }
 
-func (s CoreBanking_createAccount_Params_List) String() string {
+func (s CoreBanking_echoAccount_Params_List) String() string {
 	str, _ := text.MarshalList(0xf679d46bf8232843, s.List)
 	return str
 }
 
-// CoreBanking_createAccount_Params_Promise is a wrapper for a CoreBanking_createAccount_Params promised by a client call.
-type CoreBanking_createAccount_Params_Promise struct{ *capnp.Pipeline }
+// CoreBanking_echoAccount_Params_Promise is a wrapper for a CoreBanking_echoAccount_Params promised by a client call.
+type CoreBanking_echoAccount_Params_Promise struct{ *capnp.Pipeline }
 
-func (p CoreBanking_createAccount_Params_Promise) Struct() (CoreBanking_createAccount_Params, error) {
+func (p CoreBanking_echoAccount_Params_Promise) Struct() (CoreBanking_echoAccount_Params, error) {
 	s, err := p.Pipeline.Struct()
-	return CoreBanking_createAccount_Params{s}, err
+	return CoreBanking_echoAccount_Params{s}, err
 }
 
-func (p CoreBanking_createAccount_Params_Promise) Acc() Account_Promise {
+func (p CoreBanking_echoAccount_Params_Promise) Acc1() Account_Promise {
 	return Account_Promise{Pipeline: p.Pipeline.GetPipeline(0)}
 }
 
-type CoreBanking_createAccount_Results struct{ capnp.Struct }
+type CoreBanking_echoAccount_Results struct{ capnp.Struct }
 
-// CoreBanking_createAccount_Results_TypeID is the unique identifier for the type CoreBanking_createAccount_Results.
-const CoreBanking_createAccount_Results_TypeID = 0xbae40ac2ebeb62eb
+// CoreBanking_echoAccount_Results_TypeID is the unique identifier for the type CoreBanking_echoAccount_Results.
+const CoreBanking_echoAccount_Results_TypeID = 0xbae40ac2ebeb62eb
 
-func NewCoreBanking_createAccount_Results(s *capnp.Segment) (CoreBanking_createAccount_Results, error) {
+func NewCoreBanking_echoAccount_Results(s *capnp.Segment) (CoreBanking_echoAccount_Results, error) {
 	st, err := capnp.NewStruct(s, capnp.ObjectSize{DataSize: 0, PointerCount: 1})
-	return CoreBanking_createAccount_Results{st}, err
+	return CoreBanking_echoAccount_Results{st}, err
 }
 
-func NewRootCoreBanking_createAccount_Results(s *capnp.Segment) (CoreBanking_createAccount_Results, error) {
+func NewRootCoreBanking_echoAccount_Results(s *capnp.Segment) (CoreBanking_echoAccount_Results, error) {
 	st, err := capnp.NewRootStruct(s, capnp.ObjectSize{DataSize: 0, PointerCount: 1})
-	return CoreBanking_createAccount_Results{st}, err
+	return CoreBanking_echoAccount_Results{st}, err
 }
 
-func ReadRootCoreBanking_createAccount_Results(msg *capnp.Message) (CoreBanking_createAccount_Results, error) {
+func ReadRootCoreBanking_echoAccount_Results(msg *capnp.Message) (CoreBanking_echoAccount_Results, error) {
 	root, err := msg.RootPtr()
-	return CoreBanking_createAccount_Results{root.Struct()}, err
+	return CoreBanking_echoAccount_Results{root.Struct()}, err
 }
 
-func (s CoreBanking_createAccount_Results) String() string {
+func (s CoreBanking_echoAccount_Results) String() string {
 	str, _ := text.Marshal(0xbae40ac2ebeb62eb, s.Struct)
 	return str
 }
 
-func (s CoreBanking_createAccount_Results) Res() (Result, error) {
+func (s CoreBanking_echoAccount_Results) Acc2() (Account, error) {
 	p, err := s.Struct.Ptr(0)
-	return Result{Struct: p.Struct()}, err
+	return Account{Struct: p.Struct()}, err
 }
 
-func (s CoreBanking_createAccount_Results) HasRes() bool {
+func (s CoreBanking_echoAccount_Results) HasAcc2() bool {
 	p, err := s.Struct.Ptr(0)
 	return p.IsValid() || err != nil
 }
 
-func (s CoreBanking_createAccount_Results) SetRes(v Result) error {
+func (s CoreBanking_echoAccount_Results) SetAcc2(v Account) error {
 	return s.Struct.SetPtr(0, v.Struct.ToPtr())
 }
 
-// NewRes sets the res field to a newly
-// allocated Result struct, preferring placement in s's segment.
-func (s CoreBanking_createAccount_Results) NewRes() (Result, error) {
-	ss, err := NewResult(s.Struct.Segment())
+// NewAcc2 sets the acc2 field to a newly
+// allocated Account struct, preferring placement in s's segment.
+func (s CoreBanking_echoAccount_Results) NewAcc2() (Account, error) {
+	ss, err := NewAccount(s.Struct.Segment())
 	if err != nil {
-		return Result{}, err
+		return Account{}, err
 	}
 	err = s.Struct.SetPtr(0, ss.Struct.ToPtr())
 	return ss, err
 }
 
-// CoreBanking_createAccount_Results_List is a list of CoreBanking_createAccount_Results.
-type CoreBanking_createAccount_Results_List struct{ capnp.List }
+// CoreBanking_echoAccount_Results_List is a list of CoreBanking_echoAccount_Results.
+type CoreBanking_echoAccount_Results_List struct{ capnp.List }
 
-// NewCoreBanking_createAccount_Results creates a new list of CoreBanking_createAccount_Results.
-func NewCoreBanking_createAccount_Results_List(s *capnp.Segment, sz int32) (CoreBanking_createAccount_Results_List, error) {
+// NewCoreBanking_echoAccount_Results creates a new list of CoreBanking_echoAccount_Results.
+func NewCoreBanking_echoAccount_Results_List(s *capnp.Segment, sz int32) (CoreBanking_echoAccount_Results_List, error) {
 	l, err := capnp.NewCompositeList(s, capnp.ObjectSize{DataSize: 0, PointerCount: 1}, sz)
-	return CoreBanking_createAccount_Results_List{l}, err
+	return CoreBanking_echoAccount_Results_List{l}, err
 }
 
-func (s CoreBanking_createAccount_Results_List) At(i int) CoreBanking_createAccount_Results {
-	return CoreBanking_createAccount_Results{s.List.Struct(i)}
+func (s CoreBanking_echoAccount_Results_List) At(i int) CoreBanking_echoAccount_Results {
+	return CoreBanking_echoAccount_Results{s.List.Struct(i)}
 }
 
-func (s CoreBanking_createAccount_Results_List) Set(i int, v CoreBanking_createAccount_Results) error {
+func (s CoreBanking_echoAccount_Results_List) Set(i int, v CoreBanking_echoAccount_Results) error {
 	return s.List.SetStruct(i, v.Struct)
 }
 
-func (s CoreBanking_createAccount_Results_List) String() string {
+func (s CoreBanking_echoAccount_Results_List) String() string {
 	str, _ := text.MarshalList(0xbae40ac2ebeb62eb, s.List)
 	return str
 }
 
-// CoreBanking_createAccount_Results_Promise is a wrapper for a CoreBanking_createAccount_Results promised by a client call.
-type CoreBanking_createAccount_Results_Promise struct{ *capnp.Pipeline }
+// CoreBanking_echoAccount_Results_Promise is a wrapper for a CoreBanking_echoAccount_Results promised by a client call.
+type CoreBanking_echoAccount_Results_Promise struct{ *capnp.Pipeline }
 
-func (p CoreBanking_createAccount_Results_Promise) Struct() (CoreBanking_createAccount_Results, error) {
+func (p CoreBanking_echoAccount_Results_Promise) Struct() (CoreBanking_echoAccount_Results, error) {
 	s, err := p.Pipeline.Struct()
-	return CoreBanking_createAccount_Results{s}, err
+	return CoreBanking_echoAccount_Results{s}, err
 }
 
-func (p CoreBanking_createAccount_Results_Promise) Res() Result_Promise {
-	return Result_Promise{Pipeline: p.Pipeline.GetPipeline(0)}
+func (p CoreBanking_echoAccount_Results_Promise) Acc2() Account_Promise {
+	return Account_Promise{Pipeline: p.Pipeline.GetPipeline(0)}
 }
 
-type CoreBanking_getAccountInfo_Params struct{ capnp.Struct }
-
-// CoreBanking_getAccountInfo_Params_TypeID is the unique identifier for the type CoreBanking_getAccountInfo_Params.
-const CoreBanking_getAccountInfo_Params_TypeID = 0xf09ba84d3893ec83
-
-func NewCoreBanking_getAccountInfo_Params(s *capnp.Segment) (CoreBanking_getAccountInfo_Params, error) {
-	st, err := capnp.NewStruct(s, capnp.ObjectSize{DataSize: 0, PointerCount: 1})
-	return CoreBanking_getAccountInfo_Params{st}, err
-}
-
-func NewRootCoreBanking_getAccountInfo_Params(s *capnp.Segment) (CoreBanking_getAccountInfo_Params, error) {
-	st, err := capnp.NewRootStruct(s, capnp.ObjectSize{DataSize: 0, PointerCount: 1})
-	return CoreBanking_getAccountInfo_Params{st}, err
-}
-
-func ReadRootCoreBanking_getAccountInfo_Params(msg *capnp.Message) (CoreBanking_getAccountInfo_Params, error) {
-	root, err := msg.RootPtr()
-	return CoreBanking_getAccountInfo_Params{root.Struct()}, err
-}
-
-func (s CoreBanking_getAccountInfo_Params) String() string {
-	str, _ := text.Marshal(0xf09ba84d3893ec83, s.Struct)
-	return str
-}
-
-func (s CoreBanking_getAccountInfo_Params) AccountId() ([]byte, error) {
-	p, err := s.Struct.Ptr(0)
-	return []byte(p.Data()), err
-}
-
-func (s CoreBanking_getAccountInfo_Params) HasAccountId() bool {
-	p, err := s.Struct.Ptr(0)
-	return p.IsValid() || err != nil
-}
-
-func (s CoreBanking_getAccountInfo_Params) SetAccountId(v []byte) error {
-	return s.Struct.SetData(0, v)
-}
-
-// CoreBanking_getAccountInfo_Params_List is a list of CoreBanking_getAccountInfo_Params.
-type CoreBanking_getAccountInfo_Params_List struct{ capnp.List }
-
-// NewCoreBanking_getAccountInfo_Params creates a new list of CoreBanking_getAccountInfo_Params.
-func NewCoreBanking_getAccountInfo_Params_List(s *capnp.Segment, sz int32) (CoreBanking_getAccountInfo_Params_List, error) {
-	l, err := capnp.NewCompositeList(s, capnp.ObjectSize{DataSize: 0, PointerCount: 1}, sz)
-	return CoreBanking_getAccountInfo_Params_List{l}, err
-}
-
-func (s CoreBanking_getAccountInfo_Params_List) At(i int) CoreBanking_getAccountInfo_Params {
-	return CoreBanking_getAccountInfo_Params{s.List.Struct(i)}
-}
-
-func (s CoreBanking_getAccountInfo_Params_List) Set(i int, v CoreBanking_getAccountInfo_Params) error {
-	return s.List.SetStruct(i, v.Struct)
-}
-
-func (s CoreBanking_getAccountInfo_Params_List) String() string {
-	str, _ := text.MarshalList(0xf09ba84d3893ec83, s.List)
-	return str
-}
-
-// CoreBanking_getAccountInfo_Params_Promise is a wrapper for a CoreBanking_getAccountInfo_Params promised by a client call.
-type CoreBanking_getAccountInfo_Params_Promise struct{ *capnp.Pipeline }
-
-func (p CoreBanking_getAccountInfo_Params_Promise) Struct() (CoreBanking_getAccountInfo_Params, error) {
-	s, err := p.Pipeline.Struct()
-	return CoreBanking_getAccountInfo_Params{s}, err
-}
-
-type CoreBanking_getAccountInfo_Results struct{ capnp.Struct }
-
-// CoreBanking_getAccountInfo_Results_TypeID is the unique identifier for the type CoreBanking_getAccountInfo_Results.
-const CoreBanking_getAccountInfo_Results_TypeID = 0xe7c119336e126854
-
-func NewCoreBanking_getAccountInfo_Results(s *capnp.Segment) (CoreBanking_getAccountInfo_Results, error) {
-	st, err := capnp.NewStruct(s, capnp.ObjectSize{DataSize: 0, PointerCount: 1})
-	return CoreBanking_getAccountInfo_Results{st}, err
-}
-
-func NewRootCoreBanking_getAccountInfo_Results(s *capnp.Segment) (CoreBanking_getAccountInfo_Results, error) {
-	st, err := capnp.NewRootStruct(s, capnp.ObjectSize{DataSize: 0, PointerCount: 1})
-	return CoreBanking_getAccountInfo_Results{st}, err
-}
-
-func ReadRootCoreBanking_getAccountInfo_Results(msg *capnp.Message) (CoreBanking_getAccountInfo_Results, error) {
-	root, err := msg.RootPtr()
-	return CoreBanking_getAccountInfo_Results{root.Struct()}, err
-}
-
-func (s CoreBanking_getAccountInfo_Results) String() string {
-	str, _ := text.Marshal(0xe7c119336e126854, s.Struct)
-	return str
-}
-
-func (s CoreBanking_getAccountInfo_Results) Res() (Response, error) {
-	p, err := s.Struct.Ptr(0)
-	return Response{Struct: p.Struct()}, err
-}
-
-func (s CoreBanking_getAccountInfo_Results) HasRes() bool {
-	p, err := s.Struct.Ptr(0)
-	return p.IsValid() || err != nil
-}
-
-func (s CoreBanking_getAccountInfo_Results) SetRes(v Response) error {
-	return s.Struct.SetPtr(0, v.Struct.ToPtr())
-}
-
-// NewRes sets the res field to a newly
-// allocated Response struct, preferring placement in s's segment.
-func (s CoreBanking_getAccountInfo_Results) NewRes() (Response, error) {
-	ss, err := NewResponse(s.Struct.Segment())
-	if err != nil {
-		return Response{}, err
-	}
-	err = s.Struct.SetPtr(0, ss.Struct.ToPtr())
-	return ss, err
-}
-
-// CoreBanking_getAccountInfo_Results_List is a list of CoreBanking_getAccountInfo_Results.
-type CoreBanking_getAccountInfo_Results_List struct{ capnp.List }
-
-// NewCoreBanking_getAccountInfo_Results creates a new list of CoreBanking_getAccountInfo_Results.
-func NewCoreBanking_getAccountInfo_Results_List(s *capnp.Segment, sz int32) (CoreBanking_getAccountInfo_Results_List, error) {
-	l, err := capnp.NewCompositeList(s, capnp.ObjectSize{DataSize: 0, PointerCount: 1}, sz)
-	return CoreBanking_getAccountInfo_Results_List{l}, err
-}
-
-func (s CoreBanking_getAccountInfo_Results_List) At(i int) CoreBanking_getAccountInfo_Results {
-	return CoreBanking_getAccountInfo_Results{s.List.Struct(i)}
-}
-
-func (s CoreBanking_getAccountInfo_Results_List) Set(i int, v CoreBanking_getAccountInfo_Results) error {
-	return s.List.SetStruct(i, v.Struct)
-}
-
-func (s CoreBanking_getAccountInfo_Results_List) String() string {
-	str, _ := text.MarshalList(0xe7c119336e126854, s.List)
-	return str
-}
-
-// CoreBanking_getAccountInfo_Results_Promise is a wrapper for a CoreBanking_getAccountInfo_Results promised by a client call.
-type CoreBanking_getAccountInfo_Results_Promise struct{ *capnp.Pipeline }
-
-func (p CoreBanking_getAccountInfo_Results_Promise) Struct() (CoreBanking_getAccountInfo_Results, error) {
-	s, err := p.Pipeline.Struct()
-	return CoreBanking_getAccountInfo_Results{s}, err
-}
-
-func (p CoreBanking_getAccountInfo_Results_Promise) Res() Response_Promise {
-	return Response_Promise{Pipeline: p.Pipeline.GetPipeline(0)}
-}
-
-const schema_aaa3acc39d94e0f8 = "x\xda\xac\x93\xcfKTQ\x14\xc7\xcf\xf7\xde7\x8d\xc6" +
-	"\x0c\xe3k\x0cl!B\x0d\xa4\x826j\x8b\x18\x90q" +
-	"4!!a\xee`PA\xc8\x9d\xe7US\xe7\x8d\xcc" +
-	"{S\x18\x81`P\xbb\xa0\x12\"\xa2U\x9b\x94~@" +
-	"\xb4j\x13\xd5\xaa\xad\xf4\x07\x18\x04-l\xd1\xa2\xc2h" +
-	"\xf1\xe2>{3\xd3(1P\xbb9\xf3\xbe\xf7|\xbe" +
-	"\xe7{\xcfM\xde\xc4\x10\xeb\x0b\x1d5\x88D2\xb4\xcf" +
-	"\x1b}:}\xfb\xfa\xdd\x9552\x13\xdc\xdb\xde\\}" +
-	"\xf0\xf6\xf1\xc3u\"\x0c\xfc\xc0\x0a\xe2Q\x16&\x8a7" +
-	"\xb3\x1bq\xa9\x7fy\x9b\x99\x8dK\x1b\xee\xe4:\x89\x04" +
-	"P\x95\x87\xf4\xc7\x811\x96G\xfc\x82\x7f\xe2\x1c{F" +
-	"\xf0\xb6\xf2[[o\xf6\x7f|If\x12D!h\xd1" +
-	"7\xd6\xcf\x08\xf1(O\x13\xbc\x9fkm\xfd\xab\xa9\xaf" +
-	"\x1b\xf5\xed|e\x0f?\x8fx\x86\xebv\x83\xfc2\xc1" +
-	"{\xfe\xe2\xdd\xd5W\x93s\x1f\xc8L\xecb\xdf\xe3s" +
-	"\x88?\xf1\xc5k\xbexb\xf6\x80=p\xe8\xf5\xa7Z" +
-	"v\xc8Hiv\xbb\xa1\xd9\xd7>\xdf91\xfe\xe8\xfe" +
-	"\x97Z\xc1\xa0\xe1\x9b;\xe3\x0bF:\x8fl\xcf\xbf_" +
-	"\xfa^+X2\xba\xb5\xe0\x96\x91\xa6\x1e\xcf\x92\x8b\xf6" +
-	"b^\xd9!k\xb6 K\xf3\xc7\x82z\xa7\xec\xf5\xcb" +
-	"\xd4H\xb1\xa4\x86\xa5=\x7f\xd1\x9e\xa1, \x9ax\x88" +
-	"\xa8\xd2\x1bADf_\x89\x98\xd9\x15F\xd5\x18\x82\x11" +
-	"\xcc\xf6+\xc4\xcc\x83a\xcf*)\xe9\xaa\x8cE\x1dV" +
-	"\xb1l\xbbC\xf0f\x94\x9b\xb1\xacb\x99\xd2\xb6;f" +
-	"O\x17\x87\x90\x05*\xc6\x8c\xbf\x19\xd3\xe7\xc2e\xdb\xd5" +
-	"\xa6\"\xdc 2@d\x8e\xe6\x88\xc4I\x0e\x91e0" +
-	"\x81V\xe8?\xc7\xbb\x89\xc4)\x0e1\xc1\x00\xd6\x0aF" +
-	"d\x8aa\"q\x9aC\x9ce\xf0\xa4\xe5\x1b\x1a#L" +
-	"!J\x0cQB\xcc\x96\x05\x85\x081D\x08\xcby\xb9" +
-	" mK\xa1\x99\x18\x9a\xa9\xea0\xdc`t\xbd\xc1\xe8" +
-	">'\x91S\x1dNy\xc1u\x84Q1\x1e=L$" +
-	"\x9a8D+C\xb8\xa4\x1c\xb4T\xb7\x8b\x80\x16j0" +
-	"\x96\x9cr\xca|\xc1\xdd\xb9\xaa\xa0y\x97\x0e \xc1!" +
-	"\x92\x0cA(=:\x80N\x0eq\x9c!f\x15\xa7\x14" +
-	"\x0cb0\x08\xcb\x05\xe58r\xa62|\xc3\xdc\xc5X" +
-	"\xd1vT\x1d9U%\x9b{\xa1\xd3%\xa5\xa3\xd8=" +
-	"\xee\xf2\xefKAK\xf5\xd5\xd6\x05\xd1p\xfa\xc1\x9a\xed" +
-	",Y\"\x97V\x0d\xc4_y\xae\xff\x89\x9a\xed\x90%" +
-	"Y\xf8\x03\xaa\x975\xc2!\xda\xf6\xde\xc1\x7f]\xb3\xac" +
-	"\x8c\xd5\x13k\xc7\x94\x96\xb5;\xdc_\x01\x00\x00\xff\xff" +
-	"\xd2S\x89J"
+const schema_aaa3acc39d94e0f8 = "x\xda\xa4\x91\xbf\x8b\x13A\x1c\xc5\xdf\xfb\xee\xaek$" +
+	"\xe12l\x1a\xadDS\x88\xe0iLgs\xbf<\xf4" +
+	"@!sXh!2;\xae\xde\x91\xcb\xe4\xc8m\x04" +
+	"\x0b\x11\x0f\xf4\x0f\x10\xc1\xca\xca\xcaC\xb4\xb7\xd4\xc2\xfe" +
+	"\xb0\xb0\xbc\xc2.\xbd\\72'I\x04!\x08v\xf3" +
+	"f\xde\x9b\xcf\x9b\xf9\xd6\xbf/J+\xf9*\x80>\x9d" +
+	"\x1c\xf3\xab\x1f\x1e\xbc|\xf1z\xf7\x1dT3\xf2\x87\x07" +
+	"\xaf\xde|y\xffv\x0f`{\x8d\xbb\xcc\xee2\x05\xb2" +
+	";\xbc\x96=\x0f+\x7f\xb0\xb4\xffh\xbf\xbc\xb7\x07\xdd" +
+	"$\xa7\xf6DR\xa0\xddc\xce\xec\xd9Q\xe2\x09?\x82" +
+	"~\x94\x8fF\x9fO\xfc\xf8\x04u\x89@\x12N\xda'" +
+	"\xe5\x8c\x80YK\x16@\xbfr\xee\xeca\xf7\xdb\xe3\x9f" +
+	"\x7f\x1a\xb4\x9c\x0a\x86MY\xc0\x05o\xcd\xb6\xdb\xce\x0b" +
+	"\x97\xd8\x8d\x9e\x19t/\x8e\xf5o9\x7f$\xaf\xac\xf4" +
+	"\x07\xc5\xb2q\xddM\xf7\x10\x1dR\xc7Q\x02L\xee\xe6" +
+	"\xb8\x85R9DUR_\xd8\x8d\xfe\x92\xb5}\xa4C" +
+	"W.\xb2CN8\xf1,N\xc8\x84H`T\xa3\x18" +
+	"\x88\x09\xa8\xd5u@_\x8d\xa8;BE6\x186o" +
+	"\x9e\x07\xf4\xf5\x88\xfa\x96\x90\xd2\xa0\x00J/\x03\xfaF" +
+	"D}[\xe8\x8d\xb5\xfd\xa1+\xd7\xc0\xfb\xacAX\x03" +
+	"\xe7\x9c\xe9\x15\xacBX\x05\x9f\xe6f\xcb8[\xb0\x02" +
+	"a\x05\xd3\x86\xe9?\xfe\xc4\xfc\xf8\x95CW6\xd7\x8b" +
+	"\x9da\xbaU\xee\xe8xR\xbb\x16\x1a\x1e\x8f\xa8\x1b\xc2" +
+	"9c\xede\xd6\xa7\xd3\x05Y\xff_f\xc7\x0cL\xd4" +
+	"\x9b\x85l\xfd\x8d\xfc\x15\x00\x00\xff\xff\x10*\xbf}"
 
 func init() {
 	schemas.Register(schema_aaa3acc39d94e0f8,
 		0xa98297869266ae45,
 		0xaa5f74d276d241e0,
 		0xbae40ac2ebeb62eb,
-		0xd2f43a943218a9fb,
-		0xe16a5fbf7cc9b4b2,
-		0xe7c119336e126854,
-		0xf09ba84d3893ec83,
 		0xf679d46bf8232843)
 }

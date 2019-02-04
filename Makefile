@@ -18,7 +18,7 @@ all: tools fmt deps capnp build
 ########################################
 ### Tools & dependencies
 tools:
-	@capnp --version || (echo "Install Capn'p first; https://capnproto.org/install.html"; false)
+	#@capnp --version || (echo "Install Capn'p first; https://capnproto.org/install.html"; false)
 	@echo "Installing tools"
 	go get $(GOTOOLS)
 	@gometalinter.v2 --install

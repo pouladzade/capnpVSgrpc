@@ -2,6 +2,8 @@ package grpc
 
 import (
 	"context"
+	"encoding/hex"
+	"github.com/capnpVSgrpc/config"
 	"log"
 	"time"
 
@@ -9,28 +11,34 @@ import (
 	"google.golang.org/grpc"
 )
 
-const (
-	address     = "localhost:50051"
-	defaultName = "world"
-)
-type grpcClient struct {}
+type GrpcClient struct {
+	address string
+}
 
+func (gc *GrpcClient) Run() {
 
-func (gc *grpcClient) sendRequest() {
+	var acc pb.Account
 
-	conn, err := grpc.Dial(address, grpc.WithInsecure())
+	acc.AccountId = &pb.AccountId{}
+	acc.Name = config.AccountName
+	acc.Balance = config.Balance
+	acc.AccountId.AccountId = make([]byte, 32)
+	acc.AccountId.AccountId, _ = hex.DecodeString(config.AccountId)
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+
+	conn, err := grpc.Dial(config.GrpcAddress, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	c := pb.NewCoreBankingClient(conn)
+	cb := pb.NewCoreBankingClient(conn)
 
-
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.CreateAccount(ctx, &pb.Account{Name: ""})
+	res, err := cb.EchoAccount(ctx, &acc)
 	if err != nil {
-		log.Fatalf("could not greet: %v", err)
+		log.Fatalf("could not greet: %v, %v", err, res)
 	}
-	log.Printf("Greeting: %s", r.Message)
+	//log.Printf("\n\nGRPC Client Result :\n",hex.EncodeToString(res.AccountId.AccountId))
+
 }
