@@ -18,7 +18,7 @@ func (gs *GrpcServer) EchoAccount(ctx context.Context, in *gb.Account) (*gb.Acco
 }
 
 func (gs *GrpcServer) Start() {
-	log.Printf("\nGrpc Server is running on %s ...", config.GrpcAddress)
+	log.Printf("Grpc Server is running on %s ...", config.GrpcAddress)
 	lis, err := net.Listen(config.Network, config.GrpcAddress)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
