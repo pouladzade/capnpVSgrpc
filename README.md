@@ -19,4 +19,4 @@ ahmad@ahmad:~/go/src/github.com/capnpVSgrpc/client/build$ ./client --cmd="capnp"
 CAPNP done in 100000 Round in Average Time : 99580 Nano Second
 ```
 
-### As you can see The RPC speed of Capnp can be just a little bit faster!!!!!!
+### As you can see The Capnp rpc can be just a little bit faster!!!!!!
